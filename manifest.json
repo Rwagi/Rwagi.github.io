@@ -1,0 +1,22 @@
+{
+  "short_name": "RejestrWagi",
+  "name": "REJESTR WAGI",
+  "description": "System rejestracji i zapisu wag produkcyjnych",
+ "icons": [
+    {
+      "src": "img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#020617",
+  "theme_color": "#22c55e",
+  "display": "standalone",
+  "orientation": "any"
+}

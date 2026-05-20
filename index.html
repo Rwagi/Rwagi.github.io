@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>REJESTR WAGI</title>
+    <link rel="icon" type="image/x-icon" href="img/faviocn.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/all.min.css">
+     <script src="js/xlsx-full-mini.js" defer></script>
+    <script src="js/app.js" defer></script>
+    <script src="js/dexie.js"></script>
+</head>
+<body data-theme="dark">
+    <div id="toast-container"></div>
+    <header>
+        <div class="brand"><i class="fa-solid fa-scale-balanced"></i> REJESTR <span class="accent-text">WAGI</span></div>
+        <div class="header-right">
+            <button id="pwa-header-btn" class="pwa-inline-btn hidden" title="Zainstaluj aplikację na pulpicie">
+        <i class="fa-solid fa-cloud-arrow-down"></i> Zainstaluj aplikację
+    </button>
+            <div class="datetime"><div class="dot"></div><span id="datetime"></span></div>
+            <i class="fa-solid fa-volume-high" id="muteToggle" style="cursor:pointer; margin-right:15px; color:var(--accent);"></i>
+            <i class="fa-solid fa-moon theme-toggle" id="themeToggle"></i>
+        </div>
+    </header>
+    <main>
+        <aside class="panel">
+            <div class="field">
+                <label>ID Pracownika (SKANER)</label>
+                <input id="employeeId" type="text" placeholder="Zeskanuj ID..." autocomplete="off">
+            </div>
+            
+            <div class="field">
+                <label>Waga (kg) <class id="manualWeightBtn"> <i class="fa-solid fa-lock" title="Odblokuj edycję ręczną"></i>Tryb ręczny: ZABLOKOWANY</class></label>
+                <input id="weight" type="number" step="0.01" value="0.00" readonly>
+            </div>
+
+            <div id="debug" class="field" style="margin-top: 10px;">
+                <label style="color: #f59e0b;">Surowy odczyt (DEBUG):</label>
+                <div id="raw-debug" style="font-family: monospace; font-size: 10px; background: #000; color: #0f0; padding: 5px; border-radius: 4px; min-height: 20px; overflow: hidden; white-space: nowrap;">...czekam na dane...</div>
+            </div>
+            
+            <button class="btn confirm" id="confirmBtn"><i class="fa-solid fa-plus"></i> DODAJ WPIS</button>
+            <button class="btn edit-mode-btn" id="toggleEditBtn"><i class="fa-solid fa-pen-to-square"></i> EDYCJA TABELI</button>
+
+            <button id="connectBtn" class="btn connect-btn">
+                <i class="fa-solid fa-plug"></i> POŁĄCZ RS-232
+            </button>
+            
+            <div class="panel-bottom">
+                
+                <button class="btn reset-btn" id="resetBtn"><i class="fa-solid fa-trash"></i> WYCZYŚĆ BAZĘ  <i class="fa-solid fa-triangle-exclamation"></i></button>
+                <button class="btn download" id="downloadBtn"><i class="fa-solid fa-file-excel"></i> POBIERZ RAPORT</button>
+                <button id="openInstructionBtn" class="btn instruction-btn"><i class="fa-solid fa-circle-question"></i> INSTRUKCJA STARTOWA</button>
+                <div class="footer-note">VER 3.0 | <a href="#debug">DEBUG MODE</a> | L1SU</div>
+            </div>
+        </aside>
+        <section class="table-wrapper">
+            <div class="total-summary-card">
+                <span>CAŁKOWITA MASA:</span>
+                <strong id="grandTotalDisplay">0.00 kg</strong>
+            </div>
+            <table>
+                <thead id="tableHead"></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </section>
+    </main>
+
+
+    <div id="welcomeModal" class="modal-overlay">
+    <div class="modal-content">
+        <button id="closeModalBtn" class="modal-close">&times;</button>
+        <h2><i class="fa-solid fa-circle-info" style="color:var(--secondary);"></i> Instrukcja uruchomienia</h2>
+        
+        <ul class="instruction-list">
+            <li id="step1">
+                <span class="custom-checkbox"></span>
+                <p>1. Wlącz wage oraz skaner, podłącz kabel RS232 oraz skaner przez USB.</p>
+            </li>
+            <li id="step2">
+                <span class="custom-checkbox"></span>
+                <p>2. Podłącz kabel RS232 (kliknij tutaj, aby wywołać połączenie).</p>
+            </li>
+            <li id="step3">
+                <span class="custom-checkbox"></span>
+                <p>3. Przetestuj połączenie: połóż na wadze dowolny ciężar. (Zostanie zaliczone, gdy waga wskaże wartość inną niż 0.00).</p>
+            </li>
+            <li id="step4" class="step-disabled">
+                <span class="custom-checkbox"></span>
+                <p><strong>4. Gotowe!</strong> (Kliknij, aby zamknąć instrukcję i rozpocząć pracę).</p>
+            </li>
+        </ul>
+    </div>
+    </div>
+
+    
+    <div id="pwa-install-banner" class="pwa-banner hidden">
+    <div class="pwa-banner-content">
+        <div class="pwa-icon-wrapper">
+            <i class="fa-solid fa-download"></i>
+        </div>
+        <div class="pwa-banner-text">
+            <h3>Zainstaluj aplikację</h3>
+            <p>Dodaj Rejestr Wagi do pulpitu, aby mieć szybki dostęp.</p>
+        </div>
+    </div>
+    <div class="pwa-banner-actions">
+        <button id="pwa-btn-cancel" class="pwa-btn-secondary">Pomiń</button>
+        <button id="pwa-btn-install" class="pwa-btn-primary">Zainstaluj</button>
+    </div>
+</div>
+   
+</body>
+</html>

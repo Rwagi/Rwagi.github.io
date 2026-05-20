@@ -1,0 +1,357 @@
+:root {
+    --bg: #020617; --panel: #0f172a; --accent: #22c55e; --accent-dark: #16a34a;
+    --secondary: #2563eb; --text: #e5e7eb; --muted: #9ca3af; --border: #1f2937;
+    --sum-bg: #1e293b; --danger: #ef4444; --warning: #f59e0b;
+}
+[data-theme="light"] {
+    --bg: #f8fafc; --panel: #ffffff; --accent: #16a34a; --accent-dark: #15803d;
+    --secondary: #2563eb; --text: #020617; --muted: #475569; --border: #e5e7eb;
+    --sum-bg: #f1f5f9;
+}
+
+* { box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
+body { margin: 0; background: var(--bg); color: var(--text); height: 100vh; display: grid; grid-template-rows: auto 1fr; overflow: hidden; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 20px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--secondary); }
+
+header { background: var(--panel); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+.brand { font-weight: 800; font-size: 1.2rem; }
+.accent-text { color: var(--accent); }
+.header-right { display: flex; align-items: center; gap: 20px; }
+.datetime { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+.dot { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; animation: blink 1.5s infinite; }
+@keyframes blink { 50% { opacity: 0.2; } }
+
+.theme-toggle { cursor: pointer; font-size: 1.4rem; transition: transform 0.3s ease; }
+.theme-toggle:hover { transform: rotate(-15deg) scale(1.1); }
+
+main { display: grid; grid-template-columns: 320px 1fr; height: 100%; overflow: hidden; }
+.panel { background: var(--panel); border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; }
+.table-wrapper { padding: 20px; overflow: auto; background: var(--bg); }
+
+#debug { display: none; }
+#debug:target{ display: block; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between; align-items: center; }
+.field input { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 16px; width: 100%; }
+
+/* Styl dla aktywnej edycji ręcznej */
+.manual-toggle { cursor: pointer; transition: 0.2s; color: var(--muted); padding: 5px; }
+.manual-toggle.active { color: var(--warning); transform: scale(1.2); }
+input#weight.manual-active { border: 2px solid var(--warning); background: rgba(245, 158, 11, 0.05); }
+
+.btn { padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; text-transform: uppercase; }
+.connect-btn { background: var(--secondary); color: white; }
+
+.confirm { background: var(--accent); color: #022c22; }
+.edit-mode-btn { background: var(--secondary); color: white; }
+.panel-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+.reset-btn { background: transparent; color: var(--danger); border: 1px solid var(--danger); margin-top: 40px; }
+.download { background: #fff; color: #000; }
+a[href="#debug"]{color:var(--danger);}
+
+/* Styl dla przycisku wywołującego instrukcję */
+.instruction-btn {
+    background: var(--sum-bg); /* Ciemniejsze, stonowane tło panelu */
+    color: var(--text);
+    border: 1px solid var(--border);
+    margin-bottom: 10px; /* Odstęp od przycisku poniżej */
+}
+
+.instruction-btn:hover {
+    border-color: var(--secondary);
+    background: var(--panel);
+}
+
+.status-online { color: var(--accent) !important; animation: pulse 2s infinite; font-weight: bold; }
+@keyframes pulse { 50% { opacity: 0.5; } }
+
+table { min-width: max-content; border-collapse: separate; border-spacing: 0; background: var(--panel); border-radius: 12px; }
+th { position: sticky; top: 0; background: var(--secondary); color: white; padding: 16px; z-index: 20; min-width: 180px; }
+.sum-row { position: sticky; top: 51px; background: var(--sum-bg); font-weight: 800; z-index: 15; color: var(--accent); }
+td { padding: 14px; border-bottom: 1px solid var(--border); text-align: center; border-right: 1px solid var(--border); }
+.edit-input { width: 90%; padding: 6px; background: var(--bg); color: var(--text); border: 1px solid var(--accent); border-radius: 6px; text-align: center; }
+.total-summary-card {
+    background: var(--accent);
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+#grandTotalDisplay {
+    font-size: 2rem;
+    display: block;
+}
+
+#toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; pointer-events: none; }
+.toast { background: var(--accent); color: #022c22; padding: 14px 28px; border-radius: 12px; font-weight: 800; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+.footer-note { margin-top: 15px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 10px; color: var(--muted); text-align: center; }
+
+
+
+
+/* --- OKNO STARTOWE (MODAL) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(2, 6, 23, 0.7); /* Przyciemnienie tła */
+    backdrop-filter: blur(8px); /* ROZMYCIE TŁA APLIKACJI */
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999; /* Nad wszystkim */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+/* Klasa aktywująca wyświetlanie okna */
+.modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 30px;
+    border-radius: 16px;
+    max-width: 550px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    color: var(--text);
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.modal-close:hover {
+    color: var(--danger);
+}
+
+/* LISTA Z PUNKCIKAMI */
+.instruction-list {
+    list-style: none;
+    padding: 0;
+    margin: 25px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.instruction-list li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.instruction-list li:hover {
+    border-color: var(--secondary);
+}
+
+/* STYLIZACJA I EMULACJA ZIELONYCH FAJEK */
+.custom-checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+/* Kiedy punkt jest zaznaczony (checked) */
+.instruction-list li.checked .custom-checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Wstrzykiwanie samej ikony zielonego ptaszka (fajki) w CSS */
+.instruction-list li.checked .custom-checkbox::after {
+    content: "\f00c"; /* Kod ikony check w FontAwesome */
+    font-family: "Font Awesome 7 Free";
+    font-weight: 900;
+    color: white;
+    font-size: 0.9rem;
+}
+
+/* Wygląd nieaktywnego kroku 4 na starcie */
+.step-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+
+
+/* BANER PWA */
+.pwa-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    z-index: 9999;
+    width: calc(100% - 40px);
+    max-width: 600px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.pwa-banner.hidden {
+    display: none !important;
+}
+
+.pwa-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Nowy kontener, który tworzy idealne i wycentrowane koło */
+.pwa-icon-wrapper {
+    background: rgba(34, 197, 94, 0.1);
+    
+    /* Włączamy niezawodny Grid do idealnego pozycjonowania */
+    display: grid;
+    place-items: center; 
+    
+    /* Sztywne, równe wymiary */
+    width: 44px;
+    height: 44px;
+    
+    border-radius: 50%;
+    flex-shrink: 0; /* Zabezpieczenie, by kółko nie spłaszczyło się na małych ekranach */
+    margin-right: 5px;
+}
+
+/* Styl samej ikony wewnątrz dedykowanego kółka */
+.pwa-icon-wrapper i {
+    font-size: 1.4rem;
+    color: var(--accent);
+    line-height: 0;      /* Kluczowe: zeruje wysokość linii tekstu dla ikony */
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.pwa-banner-text h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.pwa-banner-text p {
+    margin: 4px 0 0 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.pwa-banner-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.pwa-btn-primary {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+.pwa-btn-primary:hover {
+    background: var(--accent-dark);
+}
+
+.pwa-btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+.pwa-btn-secondary:hover {
+    color: var(--text);
+    border-color: var(--muted);
+}
+
+/* Dostosowanie do ekranów telefonów */
+@media (max-width: 480px) {
+    .pwa-banner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        bottom: 10px;
+    }
+    .pwa-banner-actions {
+        justify-content: flex-end;
+    }
+}
+
+
+/* Przycisk instalacji w nagłówku */
+.pwa-inline-btn {
+    background: rgba(34, 197, 94, 0.15); /* Półprzezroczysty zielony */
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 15px;
+    transition: all 0.2s ease;
+}
+
+.pwa-inline-btn:hover {
+    background: var(--accent);
+    color: #020617; /* Ciemne tło tekstu przy najechaniu */
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+}
+
+/* Ukrywanie elementów */
+.pwa-inline-btn.hidden {
+    display: none !important;
+}
