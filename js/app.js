@@ -275,7 +275,7 @@ async function initSerial() {
 
         let headHtml = `<tr><th>Data i Godzina</th>${allIds.map(id => `<th>ID: ${id}</th>`).join('')}<th>SUMA WPISU</th></tr>`;
         let totalSumAll = 0;
-        let sumRowHtml = `<tr class="sum-row" style="background: rgba(var(--accent-rgb), 0.1); font-weight: bold;"><td>SUMA ID:</td>`;
+        let sumRowHtml = `<tr class="sum-row"><td>SUMA ID:</td>`;
         
         allIds.forEach(id => {
             const idSum = store.reduce((s, e) => s + (e[id] || 0), 0);
@@ -586,6 +586,32 @@ async function initSerial() {
         hideInstallUI();
     });
 
+
+
+   
+    // DODATKOWY LICZNIK WAŻEŃ (BEZ INGERENCJI W STARY KOD)
+
+    const originalTotalDisplay = document.getElementById("grandTotalDisplay");
+    const customScansDisplay = document.getElementById("ScansCounterDisplay");
+
+    if (originalTotalDisplay && customScansDisplay) {
+        // Funkcja, która bezpiecznie liczy wiersze w tabeli
+        const refreshScansCount = () => {
+            customScansDisplay.innerText = JSON.parse(localStorage.getItem('rejestrWagi') || '[]').length;
+        };
+
+        // 1. Liczymy wiersze od razu przy uruchomieniu strony
+        refreshScansCount();
+
+        // 2. Automatyczny strażnik: gdy stara funkcja JS zmienia masę całkowitą,
+        // ten obserwator to wykrywa i natychmiast aktualizuje liczbę skanów.
+        const observer = new MutationObserver(() => {
+            refreshScansCount();
+        });
+
+        // Włączamy obserwowanie zmian tekstowych w starym boksie
+        observer.observe(originalTotalDisplay, { childList: true, characterData: true, subtree: true });
+    }
 
 
     
