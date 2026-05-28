@@ -54,14 +54,24 @@
                 <button class="btn reset-btn" id="resetBtn"><i class="fa-solid fa-trash"></i> WYCZYŚĆ BAZĘ  <i class="fa-solid fa-triangle-exclamation"></i></button>
                 <button class="btn download" id="downloadBtn"><i class="fa-solid fa-file-excel"></i> POBIERZ RAPORT</button>
                 <button id="openInstructionBtn" class="btn instruction-btn"><i class="fa-solid fa-circle-question"></i> INSTRUKCJA STARTOWA</button>
-                <div class="footer-note">VER 3.0 | <a href="#debug">DEBUG MODE</a> | L1SU</div>
+                <div class="footer-note">VER 3.1 | <a href="#debug">DEBUG MODE</a> | <a target="_blank" href="https://github.com/L1su/RejestrWagi" class="author">🦊L1SU</a></div>
             </div>
         </aside>
         <section class="table-wrapper">
-            <div class="total-summary-card">
-                <span>CAŁKOWITA MASA:</span>
-                <strong id="grandTotalDisplay">0.00 kg</strong>
+
+            <div class="summary-info">
+                <div class="total-summary-card">
+                    <span>CAŁKOWITA MASA:</span>
+                    <strong id="grandTotalDisplay">0.00 kg</strong>
+                </div>
+
+                <div class="total-summary-card total-summary-card--mini">
+                    <span>ILOŚĆ WAŻEŃ:</span>
+                    <strong id="ScansCounterDisplay">0</strong>
+                </div>
             </div>
+
+
             <table>
                 <thead id="tableHead"></thead>
                 <tbody id="tableBody"></tbody>
